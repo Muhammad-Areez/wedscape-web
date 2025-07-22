@@ -45,7 +45,7 @@ function WoodFloor({ width, depth }) {
   );
 }
 
-export default function Home() {
+export default function Second() {
   const roomWidth = 150;
   const roomDepth = 220;
   const wallHeight = 20;
