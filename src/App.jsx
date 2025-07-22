@@ -413,18 +413,19 @@ export default function App() {
   const [columnCount, setColumnCount] = useState(6);
   const [rowCount, setRowCount] = useState(4);
 
+  const [showControls, setShowControls] = useState(false);  // toggle drawer
+
   const columns = Math.min(columnCount, maxColumns);
   const rows = Math.min(rowCount, maxRowGroups);
 
   return (
-    <div style={{ display: "flex" }}>
-      <div style={{ width: "80vw", height: "100vh" }}>
+    <div style={{ display: "flex", height: "100vh", position: "relative", width: '100vw' }}>
+      <div style={{ flexGrow: 1 }}>
         <Canvas shadows camera={{ position: [80, 100, 120], fov: 60 }}>
           <directionalLight position={[30, 80, 30]} intensity={1.8} castShadow />
           <ambientLight intensity={0.3} />
           <OrbitControls />
 
-          {/* Wood floor */}
           <WoodFloor width={roomWidth} depth={roomDepth} />
 
           {/* Walls */}
@@ -441,7 +442,6 @@ export default function App() {
             <meshStandardMaterial color="#f0e6d2" />
           </mesh>
 
-          {/* Tables & Buffet */}
           <Suspense fallback={null}>
             {Array.from({ length: columns }).flatMap((_, colIndex) => {
               const totalWidth = (columns - 1) * spacingX;
@@ -487,7 +487,44 @@ export default function App() {
         </Canvas>
       </div>
 
-      <div style={{ width: "20vw", padding: 20 }}>
+      {/* Drawer Toggle Button */}
+      <button
+        onClick={() => setShowControls(!showControls)}
+        style={{
+          position: "fixed",
+          top: 20,
+          right: showControls ? 320 : 20, // shift button when drawer is open
+          zIndex: 1000,
+          padding: "10px 15px",
+          background: "#444",
+          color: "white",
+          border: "none",
+          borderRadius: 4,
+          cursor: "pointer",
+          transition: "right 0.3s ease",
+        }}
+        aria-label={showControls ? "Close Controls" : "Open Controls"}
+      >
+        {showControls ? "Close" : "Customization Panel"}
+      </button>
+
+      {/* Drawer Control Panel */}
+      <div
+        style={{
+          position: "fixed",
+          top: 0,
+          right: 0,
+          height: "100vh",
+          width: 300,
+          backgroundColor: "rgba(0, 0, 0, 0.95)",
+          boxShadow: "-2px 0 8px rgba(0,0,0,0.25)",
+          padding: 20,
+          overflowY: "auto",
+          transform: showControls ? "translateX(0)" : "translateX(100%)",
+          transition: "transform 0.3s ease",
+          zIndex: 999,
+        }}
+      >
         <h4>Chair Color</h4>
         <ChromePicker color={chairColor} onChange={(color) => setChairColor(color.hex)} />
 
