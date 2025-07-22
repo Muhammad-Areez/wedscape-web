@@ -211,10 +211,10 @@ export default function Home() {
         }}
       >
         <h4>Chair Color</h4>
-        <ChromePicker color={chairColor} onChange={(color) => setChairColor(color.hex)} />
+        <ChromePicker color={chairColor} onChange={(color) => setChairColor(color.hex)} className="chrome-picker" />
 
         <h4 style={{ marginTop: 20 }}>Table Color</h4>
-        <ChromePicker color={tableColor} onChange={(color) => setTableColor(color.hex)} />
+        <ChromePicker color={tableColor} onChange={(color) => setTableColor(color.hex)} className="chrome-picker"/>
 
         <h4 style={{ marginTop: 20 }}>Column Count (max {maxColumns})</h4>
         <input

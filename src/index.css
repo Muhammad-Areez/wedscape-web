@@ -66,3 +66,7 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+input#rc-editable-input-2, input#rc-editable-input-4{
+  background: white;
+}

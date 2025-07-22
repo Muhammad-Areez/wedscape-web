@@ -66,46 +66,6 @@ export default function Second() {
   const columns = Math.min(columnCount, maxColumns);
   const rows = Math.min(rowCount, maxRowGroups);
 
-  const sendCustomizationToReactNative = () => {
-    const dataToSend = {
-      type: "customization_update",
-      payload: {
-        chairColor,
-        tableColor,
-        columnCount,
-        rowCount,
-      },
-    };
-    if (window.ReactNativeWebView && window.ReactNativeWebView.postMessage) {
-      window.ReactNativeWebView.postMessage(JSON.stringify(dataToSend));
-    }
-  };
-
-  useEffect(() => {
-    const handleMessageFromReactNative = (event) => {
-      try {
-        const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-  
-        if (data.type === 'customization_apply') {
-          const { chairColor, tableColor, columnCount, rowCount } = data.payload;
-          console.log('Received customization from React Native:', data.payload);
-  
-          setChairColor(chairColor || '#c0c0c0');
-          setTableColor(tableColor || '#a0522d');
-          setColumnCount(columnCount || 6);
-          setRowCount(rowCount || 4);
-        }
-      } catch (error) {
-        console.error('Error parsing message from React Native:', error);
-      }
-    };
-  
-    window.addEventListener('message', handleMessageFromReactNative);
-  
-    return () => {
-      window.removeEventListener('message', handleMessageFromReactNative);
-    };
-  }, []);
 
   return (
     <div style={{ display: "flex", height: "100vh", position: "relative", width: '100vw' }}>
