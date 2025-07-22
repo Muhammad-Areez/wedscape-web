@@ -350,7 +350,7 @@
 // }
 
 
-import React, { Suspense, useState, useMemo } from "react";
+import React, { Suspense, useState, useMemo, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
@@ -417,6 +417,21 @@ export default function App() {
 
   const columns = Math.min(columnCount, maxColumns);
   const rows = Math.min(rowCount, maxRowGroups);
+
+  const sendCustomizationToReactNative = () => {
+    const dataToSend = {
+      type: "customization_update",
+      payload: {
+        chairColor,
+        tableColor,
+        columnCount,
+        rowCount,
+      },
+    };
+    if (window.ReactNativeWebView && window.ReactNativeWebView.postMessage) {
+      window.ReactNativeWebView.postMessage(JSON.stringify(dataToSend));
+    }
+  };
 
   return (
     <div style={{ display: "flex", height: "100vh", position: "relative", width: '100vw' }}>
@@ -485,6 +500,28 @@ export default function App() {
             })}
           </Suspense>
         </Canvas>
+        <button
+        onClick={() => {
+          sendCustomizationToReactNative();  // Send data only when Customize button clicked
+        }}
+        style={{
+          position: "fixed",
+          bottom: 20,
+          left: "50%",
+          zIndex: 1000,
+          padding: "10px 15px",
+          background: "#fe7774",
+          color: "white",
+          border: "none",
+          borderRadius: 4,
+          cursor: "pointer",
+          transform: "translateX(-50%)",
+          transition: "right 0.3s ease",
+        }}
+        aria-label={showControls ? "Close Controls" : "Open Controls"}
+      >
+        {"Customize"}
+      </button>
       </div>
 
       {/* Drawer Toggle Button */}
@@ -493,10 +530,10 @@ export default function App() {
         style={{
           position: "fixed",
           top: 20,
-          right: showControls ? 320 : 20, // shift button when drawer is open
+          right: showControls ? 20 : 20, // shift button when drawer is open
           zIndex: 1000,
           padding: "10px 15px",
-          background: "#444",
+          background: "#fe7774",
           color: "white",
           border: "none",
           borderRadius: 4,
@@ -505,7 +542,7 @@ export default function App() {
         }}
         aria-label={showControls ? "Close Controls" : "Open Controls"}
       >
-        {showControls ? "Close" : "Customization Panel"}
+        {showControls ? "X" : "Customization Panel"}
       </button>
 
       {/* Drawer Control Panel */}
