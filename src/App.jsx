@@ -508,7 +508,7 @@ export default function App() {
           position: "fixed",
           bottom: 20,
           left: "50%",
-          zIndex: 1000,
+          zIndex: 100,
           padding: "10px 15px",
           background: "#fe7774",
           color: "white",
